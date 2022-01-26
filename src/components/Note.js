@@ -2,12 +2,11 @@ import React, { useContext, useEffect, memo } from "react";
 import classNames from "classnames";
 import { Context } from "../hooks/useStore";
 import "./components.css";
-import { MidiContext } from "../hooks/useMidi";
 import { WebMidi } from "webmidi";
 
-const Note = ({ trackID, stepID, isNoteOn, isNoteOnCurrentStep }) => {
+const Note = ({ trackID, stepID, isNoteOn, isNoteOnCurrentStep, midiNote }) => {
   const { toggleNote } = useContext(Context);
-  const midi = useContext(MidiContext);
+  const midi = useContext(Context);
   const noteClassNames = classNames("note", {
     on: isNoteOn,
     playing: isNoteOn && isNoteOnCurrentStep,
@@ -22,12 +21,10 @@ const Note = ({ trackID, stepID, isNoteOn, isNoteOnCurrentStep }) => {
       function onEnabled() {
         let myOutput = WebMidi.getOutputByName(midi.midiDevice);
         let channel = myOutput.channels[midi.midiChannel];
-        midi.setMyNote(channel);
-        midi.myNote.playNote(midi.midiNote);
-        console.log("mynote (note).js", midi.myNote)
+        channel.playNote(midiNote)
       }
     }
-  }, [isNoteOn, isNoteOnCurrentStep]);
+  }, [isNoteOn, isNoteOnCurrentStep, midiNote, midi.midiChannel, midi.midiDevice]);
 
   const noteClicked = (e) => {
     e.target.classList.toggle("on");

@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react'
 import ToolBar from './components/Toolbar'
 import TrackList from './components/TrackList'
 import PlayHead from './components/PlayHead'
-import Steps from './components/Steps'
 import { Provider } from './hooks/useStore'
-import { MidiProvider} from './hooks/useMidi'
 import useTimer from './hooks/useTimer'
 import useStyles from './hooks/useStyles'
 
@@ -59,20 +57,17 @@ function App() {
   };
 
     return (
-        <MidiProvider>
         <Provider>
             <main className="app">
                 <header className="app_header">
                     <ToolBar {...toolBarProps} />
                 </header>
-                <Steps count={totalSteps} />
                 <div className="app_content">
                     <PlayHead {...playHeadProps} />
                     <TrackList {...trackListProps} />
                 </div>
             </main >
         </Provider>
-        </MidiProvider>
     )
 }
 

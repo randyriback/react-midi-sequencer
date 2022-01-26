@@ -1,8 +1,7 @@
-import React, { useContext, memo, useState, useEffect } from 'react'
+import React, { useContext, memo, useState } from 'react'
 import { Context } from '../hooks/useStore'
 import './components.css'
 import { WebMidi } from 'webmidi'
-import { MidiContext } from '../hooks/useMidi'
 
 const ToolBar = ({
     setStartTime,
@@ -12,7 +11,7 @@ const ToolBar = ({
     startTime,
     BPM
 }) => {
-    const midi = useContext(MidiContext)
+    const midi = useContext(Context)
     function togglePlayback() {
         if (isSequencePlaying) {
             setPastLapse(l => l + performance.now() - startTime)
@@ -61,7 +60,27 @@ const ToolBar = ({
             <input className="form_element input_bpm" id="bpm" type="text" value={BPM} onChange={updateBPM} />
             <label className="label_bpm" htmlFor="bpm">BPM</label>
             <select
-                className="form_element select_sequence"
+                className="form_element select_device"
+                defaultValue={'DEFAULT'}
+                onChange={handleChange}
+                aria-label="Select Midi Device"
+            >
+            <option value="DEFAULT" disabled>SELECT MIDI DEVICE</option>
+                {
+                    midiOuts.map(out => {
+                        return (
+                            <option
+                                key={out.id}
+                                value={out.name}
+                            >
+                                {out.name}
+                            </option>
+                        )
+                    })
+                }
+            </select>
+             <select
+                className="form_element select_midichannel"
                 defaultValue={'DEFAULT'}
                 onChange={handleChange}
                 aria-label="Select Midi Device"

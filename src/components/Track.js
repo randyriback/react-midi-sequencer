@@ -1,17 +1,14 @@
 import React, { memo, useContext, useState, useEffect } from "react";
 import Note from "./Note";
 import "./components.css";
-import { WebMidi } from "webmidi";
-import { MidiContext } from "../hooks/useMidi";
+import { Context } from "../hooks/useStore";
 
-const Track = ({
-  trackID,
-  currentStepID,
-  title,
-  noteCount,
-  onNotes,
-  soundFilePath,
-}) => {
+const Track = ({ trackID, currentStepID, title, noteCount, onNotes }) => {
+  const {
+    selectMidi,
+    sequence: { trackList },
+  } = useContext(Context);
+  const midiNote = trackList[trackID].midiNote;
 
   const notes = [...Array(noteCount)].map((el, i) => {
     const isNoteOn = onNotes.indexOf(i) !== -1;
@@ -25,18 +22,20 @@ const Track = ({
         stepID={stepID}
         isNoteOn={isNoteOn}
         isNoteOnCurrentStep={isNoteOnCurrentStep}
+        midiNote={midiNote}
       />
     );
   });
 
-  const midi = useContext(MidiContext);
+  const midi = useContext(Context);
+  const [disabled, setDisabled] = useState(false)
 
   const letters = ["A", "B", "C", "D", "E", "F", "G"];
   let newArr = [];
   let letter = letters[0];
 
   for (let letterIndex = 0; letterIndex < letters.length; letterIndex++) {
-    for (let octave = -2; octave < 9; octave++) {
+    for (let octave = -1; octave < 8; octave++) {
       if (letter === "B" || letter === "E") {
         newArr.push(letter + octave);
       } else {
@@ -46,8 +45,6 @@ const Track = ({
       letter = letters[letterIndex];
     }
   }
-
-  console.log(newArr)
 
   const apiFriendly = (str) => {
     if (str.slice(2, 3) === "-" && str.slice(1, 2) === "#") {
@@ -63,31 +60,21 @@ const Track = ({
   };
 
   const handleSelect = (e) => {
-    midi.setMidiNote(e.target.value);
-    midi.setMidiChannel(1);
+    selectMidi({ trackID, midiNote: apiFriendly(e.target.value) });
+    console.log(e.target.value, "MIDINOTE!!");
   };
 
   const deviceCheck = () => {
     if (!midi.midiDevice) {
-      console.log("aw! no device selected");
-    } else {
-      WebMidi.enable()
-        .then(onEnabled)
-        .catch((err) => alert(err));
-
-      function onEnabled() {
-        let myOutput = WebMidi.getOutputByName(midi.midiDevice);
-        let channel = myOutput.channels[midi.midiChannel];
-        midi.setMyNote(channel)
-        console.log("mynote (track).js", midi.myNote)
-      }
-    }
+      setDisabled(true)
+    }else{
+      setDisabled(false)
+    } 
   };
-
   useEffect(deviceCheck, [midi]);
 
   return (
-    <div className="track">
+    <div className="track" style={disabled ? {pointerEvents: "none", opacity: "0.4"} : {}}>
       <select onChange={handleSelect}>
         {newArr.map((x, index) => (
           <option value={x} key={index}>
@@ -96,7 +83,6 @@ const Track = ({
         ))}
       </select>
       <header className="track_title">{title}</header>
-      <p>{midi.midiNote}</p>
       <main className="track_notes">{notes}</main>
     </div>
   );

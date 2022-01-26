@@ -5,12 +5,12 @@ import Track from './Track'
 const TrackList = ({ currentStepID }) => {
     const { sequence: { trackList, noteCount } } = useContext(Context)
     const content = trackList.map((track, trackID) => {
-        const { title, onNotes } = track
+        const { onNotes } = track
 
         return (
             
             <Track
-                key={title}
+                key={trackID}
                 trackID={+trackID}
                 currentStepID={currentStepID}
                 noteCount={noteCount}

@@ -1,17 +1,52 @@
-import React, { useReducer, createContext } from 'react'
-import { sequenceList } from '../constants/config'
+import React, { useReducer, createContext, useState } from 'react'
+
+const sequenceList =
+    {
+        noteCount: 16,
+        trackList: [
+            {
+            
+                onNotes: [],
+                midiNote: "A-1"
+            },
+            {
+                onNotes: [],
+                midiNote: "A-1"
+            },
+            {
+
+                onNotes: [],
+                midiNote: "A-1"
+            },
+            {
+                onNotes: [],
+                midiNote: "A-1"
+
+            }
+        ]
+    }
 
 const Context = createContext({
     sequence: {},
     toggleNote: () => { },
-    selectSequence: () => { },
 })
 
 const appReducer = (state, action) => {
     switch (action.type) {
-        case 'SET_SEQUENCE':
+        case 'SET_MIDINOTE':
+            let newMidiList = state.trackList.map((track, trackID) => {
+                if (action.trackID === trackID) {
+                    return {
+                        ...track,
+                        midiNote: action.value
+                    }
+                } else {
+                    return track
+                }
+            })
             return {
-                ...sequenceList.find(seq => seq.id === action.value)
+                ...state,
+                trackList: newMidiList
             }
         case 'SET_ON_NOTES':
             let newTrackList = state.trackList.map((track, trackID) => {
@@ -34,8 +69,10 @@ const appReducer = (state, action) => {
 }
 
 const Provider = ({ children }) => {
-    const [sequence, dispatch] = useReducer(appReducer, { ...sequenceList[0] })
-
+    const [sequence, dispatch] = useReducer(appReducer, { ...sequenceList })
+    const [midiDevice, setMidiDevice] = useState("");
+  const [midiChannel, setMidiChannel] = useState(1);
+  const [myNote, setMyNote] = useState({})
     const toggleNote = ({ trackID, stepID }) => {
         let newOnNotes
         const onNotes = sequence.trackList[trackID].onNotes
@@ -52,15 +89,24 @@ const Provider = ({ children }) => {
         })
     }
 
-    const selectSequence = (sequenceID) => {
+    const selectMidi = ( { trackID, midiNote } ) => {
+
         dispatch({
-            type: 'SET_SEQUENCE',
-            value: sequenceID,
+            type: 'SET_MIDINOTE', 
+            value: midiNote,
+            trackID
         })
+
     }
 
+
     return (
-        <Context.Provider value={{ sequence, toggleNote, selectSequence }}>
+        <Context.Provider value={{ sequence, toggleNote, selectMidi, midiDevice,
+        setMidiDevice,
+        midiChannel,
+        setMidiChannel,
+        myNote,
+        setMyNote }}>
             {children}
         </Context.Provider>
     )
