@@ -3,8 +3,9 @@ import Note from "./Note";
 import "./components.css";
 import { Context } from "../hooks/useStore";
 import { orderBy } from "natural-orderby";
+import midiNotes from "../utils/midiNotes";
 
-const Track = ({ trackID, currentStepID, title, noteCount, onNotes }) => {
+const Track = ({ trackID, currentStepID, noteCount, onNotes }) => {
   const {
     selectMidi,
     sequence: { trackList },
@@ -31,23 +32,10 @@ const Track = ({ trackID, currentStepID, title, noteCount, onNotes }) => {
   const midi = useContext(Context);
   const [disabled, setDisabled] = useState(false);
 
-  const letters = ["A", "B", "C", "D", "E", "F", "G"];
-  let newArr = [];
-  let rev = [];
-
-  for (let octave = -1; octave < 8; octave++) {
-    for (let letterIndex = 0; letterIndex < letters.length; letterIndex++) {
-      let letter = letters[letterIndex];
-      if (letter === "B" || letter === "E") {
-        newArr.push(letter + octave);
-      } else {
-        newArr.push(letter + octave);
-        newArr.push(letter + "#" + octave);
-      }
-      letter = letters[letterIndex];
-    }
-  }
-
+  const handleSelect = (e) => {
+    selectMidi({ trackID, midiNote: apiFriendly(e.target.value) });
+    console.log(e.target.value, "MIDINOTE!!");
+  };
 
   const apiFriendly = (str) => {
     if (str.slice(2, 3) === "-" && str.slice(1, 2) === "#") {
@@ -60,11 +48,6 @@ const Track = ({ trackID, currentStepID, title, noteCount, onNotes }) => {
       let newNum = Number(str.slice(1)) + 1;
       return str.slice(0, 1) + newNum.toString();
     }
-  };
-
-  const handleSelect = (e) => {
-    selectMidi({ trackID, midiNote: apiFriendly(e.target.value) });
-    console.log(e.target.value, "MIDINOTE!!");
   };
 
   const deviceCheck = () => {
@@ -82,13 +65,12 @@ const Track = ({ trackID, currentStepID, title, noteCount, onNotes }) => {
       style={disabled ? { pointerEvents: "none", opacity: "0.4" } : {}}
     >
       <select onChange={handleSelect}>
-        {newArr.map((x, index) => (
+        {midiNotes.map((x, index) => (
           <option value={x} key={index}>
             {x}
           </option>
         ))}
       </select>
-      <header className="track_title">{title}</header>
       <main className="track_notes">{notes}</main>
     </div>
   );

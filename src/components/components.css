@@ -1,4 +1,92 @@
-.note {
+*,
+*:before,
+*:after{
+  box-sizing: border-box;
+}
+
+.wrapper{
+  width: 500px;
+  height: 80px;
+  margin: 100px auto 0;
+  border-radius: 10px;
+  padding: .7%;
+      
+  background-image: -webkit-linear-gradient(top, #161616 0%, #1F1F1F 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#161616), to(#1F1F1F));
+}
+
+.note{
+  height: 100%;
+  color: #818181;
+  background-image: linear-gradient(top, #383838 0%, #1F1F1F 5%, #161616 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#1F1F1F), to(#161616));
+  border-radius: 7px;
+  flex: 0 0 var(--note-width);
+  height: 50px;
+  width: 50px;
+  float: left;
+  box-shadow: 0 0 1px 1px rgb(10,10,10);
+  cursor: pointer;
+  position: relative;
+  font: normal 20px arial;
+  text-transform: uppercase;
+  padding-left: 4%;
+  padding-top: 5%;
+  padding: 10px;
+  vertical-align: bottom;
+  transition: color .3s ease;
+}
+
+.note:hover{
+  color: #9E9E9E;
+}
+
+.button:active{
+  box-shadow: 0 0 1px 1px rgb(10,10,10),
+              inset 0 2px 2px 0px black;
+}
+
+.note:before{
+  position: absolute;
+  content: '';
+  right: 15px;
+  top: 10px;
+
+  width: 12px;
+  height: 12px;
+  background: #646464;
+  background-image: radial-gradient(top, #616161 0%, #616161 20%, #535353 60%);
+  border-radius: 50%;
+  box-shadow: 0 0 4px #1C1C17;
+  transition: all .3s ease;
+}
+
+.note:hover:before{
+  background: #FF4F4F;
+  box-shadow: 0 0 4px #1C1C17,
+              0 0 5px #FF4242;
+}
+
+.note:active:before{
+  box-shadow: 0 0 4px #1C1C17,
+              inset 0 2px 2px 0px #CC0000;
+}
+
+.note.on:before {
+  background: #FF4F4F;
+  box-shadow: 0 0 4px #1C1C17,
+              0 0 5px #FF4242;
+}
+
+.note.playing:before {
+  background: greenyellow;
+  box-shadow: 0 0 4px #1C1C17,
+              0 0 5px #FF4242;
+}
+
+
+
+/* .note {
     flex: 0 0 var(--note-width);
     height: var(--note-height);
     width: var(--note-width);
@@ -9,16 +97,8 @@
     margin-left: var(--note-margin-horz);
     margin-right: var(--note-margin-horz);
     cursor: pointer;
-}
+} */
 
-.note.on {
-    background-color: var(--color-dark-grey);
-    transition: background-color 120ms 0 ease;
-}
-
-.note.playing {
-    background-color: var(--color-highlight);
-}
 
 
 .toolbar {
@@ -58,7 +138,7 @@
     margin-right: var(--spacer);
   }
 
-  .select_sequence {
+  .select {
     margin-left: var(--spacer);
     text-transform: uppercase;
     border-radius: 0;
@@ -75,6 +155,14 @@
   .track {
     display: flex;
     flex-direction: row;
+  }
+
+  .track-list{
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
   }
 
   .track_title {

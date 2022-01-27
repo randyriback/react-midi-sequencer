@@ -71,8 +71,8 @@ const appReducer = (state, action) => {
 const Provider = ({ children }) => {
     const [sequence, dispatch] = useReducer(appReducer, { ...sequenceList })
     const [midiDevice, setMidiDevice] = useState("");
-  const [midiChannel, setMidiChannel] = useState(1);
-  const [myNote, setMyNote] = useState({})
+    const [midiChannel, setMidiChannel] = useState(1);
+    const [myNote, setMyNote] = useState({})
     const toggleNote = ({ trackID, stepID }) => {
         let newOnNotes
         const onNotes = sequence.trackList[trackID].onNotes

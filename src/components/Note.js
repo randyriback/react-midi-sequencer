@@ -21,6 +21,7 @@ const Note = ({ trackID, stepID, isNoteOn, isNoteOnCurrentStep, midiNote }) => {
       function onEnabled() {
         let myOutput = WebMidi.getOutputByName(midi.midiDevice);
         let channel = myOutput.channels[midi.midiChannel];
+        console.log(midi.midiChannel)
         channel.playNote(midiNote)
       }
     }
