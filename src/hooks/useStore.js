@@ -7,20 +7,20 @@ const sequenceList =
             {
             
                 onNotes: [],
-                midiNote: "A-1"
+                midiNote: "A0"
             },
             {
                 onNotes: [],
-                midiNote: "A-1"
+                midiNote: "A0"
             },
             {
 
                 onNotes: [],
-                midiNote: "A-1"
+                midiNote: "A0"
             },
             {
                 onNotes: [],
-                midiNote: "A-1"
+                midiNote: "A0"
 
             }
         ]

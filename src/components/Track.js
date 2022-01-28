@@ -2,7 +2,6 @@ import React, { memo, useContext, useState, useEffect } from "react";
 import Note from "./Note";
 import "./components.css";
 import { Context } from "../hooks/useStore";
-import { orderBy } from "natural-orderby";
 import midiNotes from "../utils/midiNotes";
 
 const Track = ({ trackID, currentStepID, noteCount, onNotes }) => {
@@ -64,13 +63,15 @@ const Track = ({ trackID, currentStepID, noteCount, onNotes }) => {
       className="track"
       style={disabled ? { pointerEvents: "none", opacity: "0.4" } : {}}
     >
-      <select onChange={handleSelect}>
+    <div className="selecttrackdiv">
+      <select onChange={handleSelect} className="selecttrack">
         {midiNotes.map((x, index) => (
           <option value={x} key={index}>
             {x}
           </option>
         ))}
       </select>
+      </div>
       <main className="track_notes">{notes}</main>
     </div>
   );

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import ToolBar from './components/Toolbar'
+import Dropdowns from './components/Dropdowns'
+import Buttons from './components/Buttons'
 import TrackList from './components/TrackList'
-import PlayHead from './components/PlayHead'
 import { Provider } from './hooks/useStore'
 import useTimer from './hooks/useTimer'
-import useStyles from './hooks/useStyles'
+
 
 function App() {
 
@@ -14,14 +14,10 @@ function App() {
     const barsPerSequence = 2
     const totalSteps = stepsPerBar * barsPerSequence
     const totalBeats = beatsPerBar * barsPerSequence
-
     const [BPM, setBPM] = useState(120)
     const [startTime, setStartTime] = useState(null)
     const [pastLapsedTime, setPastLapse] = useState(0)
     const [currentStepID, setCurrentStep] = useState(null)
-    const [getNotesAreaWidthInPixels] = useStyles(totalSteps)
-
-    const notesAreaWidthInPixels = getNotesAreaWidthInPixels(totalSteps)
     const timePerSequence = baseBPMPerOneSecond / BPM * 1000 * totalBeats
     const timePerStep = timePerSequence / totalSteps
     const isSequencePlaying = startTime !== null
@@ -37,7 +33,7 @@ function App() {
         }
     }, [isSequencePlaying, timePerStep, totalLapsedTime, totalSteps])
 
-    const toolBarProps = {
+    const playPauseProps = {
         setStartTime,
         setPastLapse,
         setBPM,
@@ -46,25 +42,17 @@ function App() {
         BPM
     }
 
-    const playHeadProps = {
-        notesAreaWidthInPixels,
-        timePerSequence,
-        totalLapsedTime
-    }
 
-      const trackListProps = {
-    currentStepID,
-  };
 
     return (
         <Provider>
             <main className="app">
                 <header className="app_header">
-                    <ToolBar {...toolBarProps} />
+                    <Dropdowns/>
                 </header>
                 <div className="app_content">
-                    <PlayHead {...playHeadProps} />
-                    <TrackList {...trackListProps} />
+                    <Buttons {...playPauseProps} />
+                    <TrackList currentStepID={currentStepID} />
                 </div>
             </main >
         </Provider>
