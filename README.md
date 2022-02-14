@@ -4,7 +4,7 @@ A 16 Step MIDI Sequencer for the browser built in React with the [WebMidi.js API
 
 ## Why build this?
 
-After years of being dissatisfied with the built-in "piano roll" sequencer of Ableton Live, I'd been craving a simple step-sequencer UI, similar to hardware drum machines I've owned in the past.
+After years of being dissatisfied with the built-in "piano roll" sequencer of Ableton Live, I'd been craving a simple step-sequencer UI, similar to hardware drum machines I've owned in the past
 
 ## How to use:
 
