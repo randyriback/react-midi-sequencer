@@ -1,6 +1,6 @@
 ## What is this?
 
-A 16 Step MIDI Sequencer for the browser built in React with the [WebMidi.js API](https://webmidijs.org/docs/), inspired by the [React 808](https://github.com/joeshub/react-808) 
+A 16 Step MIDI Sequencer for the browser built in React with the [WebMidi.js API](https://webmidijs.org/docs/)
 
 ## Why build this?
 
